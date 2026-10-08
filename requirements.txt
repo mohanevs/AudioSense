@@ -1,0 +1,28 @@
+# Core scientific and audio processing
+numpy
+scipy
+soundfile
+sounddevice
+librosa
+moviepy
+
+# Deep learning and models
+torch
+torchaudio
+transformers
+panns_inference
+
+# YAMNet and TensorFlow Hub
+tensorflow
+tensorflow-hub
+kagglehub
+
+# Speech transcription and VAD
+silero-vad
+faster-whisper
+
+# Networking, utilities, and optional server
+requests
+fastapi
+uvicorn
+setuptools>=70.0.0
