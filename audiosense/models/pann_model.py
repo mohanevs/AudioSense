@@ -29,11 +29,11 @@ class PANNModel:
         else:
             torch_device = self.device
 
+        # Auto-download on first use if not present
         if not self.checkpoint_path.exists():
-            raise FileNotFoundError(
-                f"PANN checkpoint not found at {self.checkpoint_path}. "
-                "Run `python load_model.py` or `audiosense.download_models()`."
-            )
+            from .download import download_pann
+            print(f"[AudioSense] Downloading PANN weights on first use...")
+            download_pann(self.checkpoint_path.parent)
 
         with silence_all():
             from panns_inference import AudioTagging
@@ -41,10 +41,6 @@ class PANNModel:
         self._labels = self._tagger.labels
 
     def predict(self, audio_32k: np.ndarray, top_k: int = 10) -> List[Tuple[str, float]]:
-        """
-        Run inference on 32 kHz mono float32 waveform.
-        Returns list of (label, score) tuples.
-        """
         self._load()
         with silence_all():
             clipwise_output, _ = self._tagger.inference(audio_32k[None, :])
@@ -55,9 +51,6 @@ class PANNModel:
         return [(self._labels[i], float(scores[i])) for i in top_idx]
 
     def predict_all(self, audio_32k: np.ndarray, threshold: float = 0.0) -> List[Tuple[str, float]]:
-        """
-        Run inference and return all labels matching or exceeding threshold.
-        """
         self._load()
         with silence_all():
             clipwise_output, _ = self._tagger.inference(audio_32k[None, :])

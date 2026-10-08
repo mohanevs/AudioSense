@@ -77,7 +77,11 @@ def update_audio_labels(
     return data
 
 
-def view_db(file_path: Optional[Union[str, Path]] = None, return_str: bool = False) -> Any:
+def view_db(
+    file_path: Optional[Union[str, Path]] = None,
+    return_str: bool = False,
+    verbose: bool = True
+) -> Any:
     """
     Displays and returns the current JSON database contents.
     Requirement 6: view_db()
@@ -85,7 +89,8 @@ def view_db(file_path: Optional[Union[str, Path]] = None, return_str: bool = Fal
     db_file = Path(file_path or DEFAULT_DB_PATH).resolve()
     if not db_file.exists():
         msg = f"[AudioSense DB] Database file not found at: {db_file}"
-        print(msg)
+        if verbose:
+            print(msg)
         return {"current_labels": {}, "old_labels": {}} if not return_str else msg
 
     with open(db_file, "r", encoding="utf-8") as f:
@@ -125,6 +130,7 @@ def view_db(file_path: Optional[Union[str, Path]] = None, return_str: bool = Fal
 
     lines.append("=" * 65)
     formatted = "\n".join(lines)
-    print(formatted)
+    if verbose:
+        print(formatted)
 
     return formatted if return_str else data

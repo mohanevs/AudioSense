@@ -28,11 +28,11 @@ class ASTModel:
         else:
             self._torch_device = self.device
 
-        if not self.model_dir.exists():
-            raise FileNotFoundError(
-                f"AST model directory not found at {self.model_dir}. "
-                "Run `python load_model.py` or `audiosense.download_models()`."
-            )
+        # Auto-download on first use if not present
+        if not self.model_dir.exists() or not (self.model_dir / "config.json").exists():
+            from .download import download_ast
+            print(f"[AudioSense] Downloading AST weights on first use...")
+            download_ast(self.model_dir)
 
         with silence_all():
             from transformers import AutoFeatureExtractor, AutoModelForAudioClassification
@@ -43,10 +43,6 @@ class ASTModel:
                 self._model.half()
 
     def predict(self, audio_16k: np.ndarray, top_k: int = 10) -> List[Tuple[str, float]]:
-        """
-        Run inference on 16 kHz mono float32 waveform.
-        Returns list of (label, score) tuples.
-        """
         self._load()
         import torch
 
@@ -65,9 +61,6 @@ class ASTModel:
         return [(id2label[int(idx.item())], float(score.item())) for score, idx in zip(top_scores, top_idx)]
 
     def predict_all(self, audio_16k: np.ndarray, threshold: float = 0.0) -> List[Tuple[str, float]]:
-        """
-        Run inference and return all labels matching or exceeding threshold.
-        """
         self._load()
         import torch
 

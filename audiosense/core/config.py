@@ -15,9 +15,9 @@ def get_default_models_dir() -> Path:
     Dynamically locate the models directory.
     Checks:
       1. AUDIOSENSE_MODELS_DIR environment variable
-      2. PROJECT_ROOT / "models"
-      3. PACKAGE_ROOT / "models"
-      4. ~/.cache/audiosense/models
+      2. Path.cwd() / "models" (if running in project directory with models)
+      3. PROJECT_ROOT / "models" (development repo layout)
+      4. ~/.cache/audiosense/models (standard user cache for pip packages)
     """
     env_dir = os.environ.get("AUDIOSENSE_MODELS_DIR")
     if env_dir:
@@ -25,13 +25,13 @@ def get_default_models_dir() -> Path:
         if p.exists():
             return p
 
-    project_models = PROJECT_ROOT / "models"
-    if project_models.exists():
-        return project_models
+    cwd_models = Path.cwd() / "models"
+    if cwd_models.exists() and (cwd_models / "ast").exists():
+        return cwd_models
 
-    pkg_models = PACKAGE_ROOT / "models"
-    if pkg_models.exists():
-        return pkg_models
+    project_models = PROJECT_ROOT / "models"
+    if project_models.exists() and (project_models / "ast").exists():
+        return project_models
 
     cache_models = Path.home() / ".cache" / "audiosense" / "models"
     cache_models.mkdir(parents=True, exist_ok=True)
@@ -40,12 +40,18 @@ def get_default_models_dir() -> Path:
 def get_default_db_path() -> Path:
     """
     Default path for audio_sense_labels.json.
-    Prefers project root if writable, otherwise ~/.cache/audiosense/
+    Prefers user's current working directory, fallback to ~/.cache/audiosense/
     """
-    proj_db = PROJECT_ROOT / "audio_sense_labels.json"
-    if proj_db.exists() or os.access(PROJECT_ROOT, os.W_OK):
-        return proj_db
-    return Path.home() / ".cache" / "audiosense" / "audio_sense_labels.json"
+    try:
+        cwd_db = Path.cwd() / "audio_sense_labels.json"
+        if cwd_db.exists() or os.access(Path.cwd(), os.W_OK):
+            return cwd_db
+    except Exception:
+        pass
+
+    cache_dir = Path.home() / ".cache" / "audiosense"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    return cache_dir / "audio_sense_labels.json"
 
 DEFAULT_MODELS_DIR = get_default_models_dir()
 DEFAULT_DB_PATH = get_default_db_path()

@@ -24,6 +24,8 @@ from .labels.categories import get_categories
 from .labels.top import top_k
 from .storage.database import view_db
 from .live.loop import run_mic_loop
+from .models.download import download_all_models
+from .context.download_llm import download_llm_model
 
 # Register audiosense.label alias in sys.modules so `from audiosense.label import ...` works
 from . import label as _label_mod
@@ -46,6 +48,14 @@ def loop(chunk_duration: float = 3.0, sample_rate: int = 16000, device=None, cal
         callback=callback
     )
 
+def download_models(models_dir=None) -> bool:
+    """Download all core acoustic models (AST, PANN, YAMNet)."""
+    return download_all_models(models_dir=models_dir)
+
+def download_llm(llm_dir=None):
+    """Download local Phi-4-mini GGUF model."""
+    return download_llm_model(llm_dir=llm_dir)
+
 __all__ = [
     "AudioSense",
     "AudioSenseResult",
@@ -62,5 +72,7 @@ __all__ = [
     "view_db",
     "summary_db",
     "loop",
+    "download_models",
+    "download_llm",
     "__version__",
 ]

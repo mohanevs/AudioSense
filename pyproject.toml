@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audiosense"
+version = "1.0.0"
+description = "Audio intelligence framework for machines, robots and modern applications"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Mohan", email = "mohanevs@users.noreply.github.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+keywords = [
+    "audio",
+    "sound-classification",
+    "speech-recognition",
+    "audio-intelligence",
+    "robotics",
+    "panns",
+    "ast",
+    "yamnet",
+    "whisper",
+    "vad"
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "soundfile",
+    "sounddevice",
+    "librosa",
+    "moviepy",
+    "torch",
+    "torchaudio",
+    "transformers",
+    "panns_inference",
+    "tensorflow",
+    "tensorflow-hub",
+    "kagglehub",
+    "silero-vad",
+    "faster-whisper",
+    "requests",
+    "setuptools>=70.0.0",
+]
+
+[project.optional-dependencies]
+server = [
+    "fastapi",
+    "uvicorn",
+]
+
+[project.scripts]
+audiosense = "audiosense.cli:main"
+audiosense-download = "audiosense.cli:download_cli"
+audiosense-setup = "audiosense.cli:setup_cli"
+
+[project.urls]
+Homepage = "https://github.com/mohanevs/AudioSense"
+Repository = "https://github.com/mohanevs/AudioSense.git"
+Issues = "https://github.com/mohanevs/AudioSense/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["audiosense*"]

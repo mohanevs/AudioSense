@@ -129,7 +129,7 @@ class AudioSense:
         Generates a well-formatted summary of the database using the LLM
         (translated if language is set to 'hin' etc.).
         """
-        data = view_db(file_path=self.db_path)
+        data = view_db(file_path=self.db_path, verbose=False)
         with silence_all():
             summary = generate_database_summary(data, self._llm, language=self.language)
         print("\n" + summary)
