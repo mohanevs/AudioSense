@@ -4,27 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "audiosense"
-version = "1.0.0"
+version = "1.0.1"
 description = "Audio intelligence framework for machines, robots and modern applications"
-readme = "README.md"
+readme = "README_PYPI.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
-    { name = "Mohan", email = "mohanevs@users.noreply.github.com" },
-]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Topic :: Multimedia :: Sound/Audio :: Analysis",
-    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    { name = "Vaibhavsingh S. Mohane", email = "vaibhavmohane22@gmail.com" },
 ]
 keywords = [
     "audio",

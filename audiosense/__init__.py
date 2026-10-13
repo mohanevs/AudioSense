@@ -1,6 +1,6 @@
 """
 AudioSense: Audio intelligence framework for machines, robots, and applications.
-Version 1.0.0
+Version 1.0.1
 """
 
 # Silence all background logs, oneDNN warnings, and progress bars immediately
@@ -31,7 +31,7 @@ from .context.download_llm import download_llm_model
 from . import label as _label_mod
 sys.modules["audiosense.label"] = _label_mod
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 def summary_db(llm_path=None, language="en") -> str:
     """Convenience top-level summary_db function."""
